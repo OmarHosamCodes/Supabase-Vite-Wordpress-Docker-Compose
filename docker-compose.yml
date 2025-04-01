@@ -687,3 +687,8 @@ volumes:
   wordpress_data:
   wordpress_db_data:
   supabase_db_config:
+
+networks:
+  default:
+    name: quadrillion_network
+    driver: bridge
