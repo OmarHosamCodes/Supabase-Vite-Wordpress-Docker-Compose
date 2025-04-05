@@ -2,7 +2,7 @@
 services:
   studio:
     container_name: supabase-studio
-    image: supabase/studio:20250113-83c9420
+    image: supabase/studio:20241202-71e5240
     restart: unless-stopped
     healthcheck:
       test: [ "CMD", "node", "-e", "fetch('http://studio:3000/api/profile').then((r) => {if (r.status !== 200) throw new Error(r.status)})" ]
@@ -83,7 +83,7 @@ services:
 
   auth:
     container_name: supabase-auth
-    image: supabase/gotrue:v2.167.0
+    image: supabase/gotrue:v2.164.0
     restart: unless-stopped
     healthcheck:
       test:
@@ -172,7 +172,7 @@ services:
   realtime:
     # This container name looks inconsistent but is correct because realtime constructs tenant id by parsing the subdomain
     container_name: realtime-dev.supabase-realtime
-    image: supabase/realtime:v2.34.7
+    image: supabase/realtime:v2.33.70
     restart: unless-stopped
     depends_on:
       db:
@@ -257,7 +257,7 @@ services:
 
   supabase-storage:
     container_name: supabase-storage
-    image: supabase/storage-api:v1.14.5
+    image: supabase/storage-api:v1.14.6
     restart: unless-stopped
     depends_on:
       db:
@@ -352,7 +352,7 @@ services:
       retries: 3
   functions:
     container_name: supabase-edge-functions
-    image: supabase/edge-runtime:v1.67.0
+    image: supabase/edge-runtime:v1.65.3
     restart: unless-stopped
     # volumes:
     #   - ./supabase/volumes/functions:/home/deno/functions:Z
