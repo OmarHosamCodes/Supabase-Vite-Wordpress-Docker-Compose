@@ -515,24 +515,24 @@ services:
   # dashboardui:
   #   image: oven/bun:1.2
   #   volumes:
-  #     - ./new-admin:/apps/new-admin
+  #     - ./quadrillion-admin-panel:/apps/quadrillion-admin-panel
   #   ports:
   #     - "${DASHBOARD_PORT}:8092"
   #   environment:
   #     - VITE_BASE_URL=${DASHBOARD_BASE_URL}
-  #   working_dir: /apps/new-admin
+  #   working_dir: /apps/quadrillion-admin-panel
   #   command: sh -c "bun install && bun run dev"
   #   develop:
   #     watch:
-  #       - path: ./new-admin/package.json
+  #       - path: ./quadrillion-admin-panel/package.json
   #         action: sync+restart
-  #         target: /apps/new-admin/package.json
-  #       - path: ./new-admin/vite.config.ts
+  #         target: /apps/quadrillion-admin-panel/package.json
+  #       - path: ./quadrillion-admin-panel/vite.config.ts
   #         action: sync+restart
-  #         target: /apps/new-admin/vite.config.ts
-  #       - path: ./new-admin/src
+  #         target: /apps/quadrillion-admin-panel/vite.config.ts
+  #       - path: ./quadrillion-admin-panel/src
   #         action: sync+restart
-  #         target: /apps/new-admin/src
+  #         target: /apps/quadrillion-admin-panel/src
   #   depends_on:
   #     api:
   #       condition: service_started
@@ -540,22 +540,22 @@ services:
   iframes:
     image: oven/bun:1.2
     volumes:
-      - ./embed:/apps/embed
+      - ./quadrillion-UI-integration:/apps/quadrillion-UI-integration
     ports:
       - "${IFRAME_PORT}:8093"
     environment:
       - VITE_BASE_URL=${IFRAME_BASE_URL}
       - VITE_DEV_EMAIL=${DEV_EMAIL}
-    working_dir: /apps/embed
+    working_dir: /apps/quadrillion-UI-integration
     command: sh -c "bun install && bun run dev"
     develop:
       watch:
-        - path: ./embed/package.json
+        - path: ./quadrillion-UI-integration/package.json
           action: sync+restart
-          target: /apps/embed/package.json
-        - path: ./embed/vite.config.ts
+          target: /apps/quadrillion-UI-integration/package.json
+        - path: ./quadrillion-UI-integration/vite.config.ts
           action: sync+restart
-          target: /apps/embed/vite.config.ts
+          target: /apps/quadrillion-UI-integration/vite.config.ts
     depends_on:
       api:
         condition: service_started
@@ -563,7 +563,7 @@ services:
   api:
     image: oven/bun:1.2
     volumes:
-      - ./api:/apps/api
+      - ./quadrillion-api:/apps/quadrillion-api
     ports:
       - "${API_PORT}:8095"
     environment:
@@ -573,13 +573,13 @@ services:
       - SUPABASE_STORAGE_URL=${SUPABASE_STORAGE_URL}
       - NODE_ENV=${NODE_ENV}
       - PORT=${API_PORT}
-    working_dir: /apps/api
+    working_dir: /apps/quadrillion-api
     command: sh -c "bun install && bun run dev"
     develop:
       watch:
-        - path: ./api/package.json
+        - path: ./quadrillion-api/package.json
           action: sync+restart
-          target: /apps/api/package.json
+          target: /apps/quadrillion-api/package.json
     depends_on:
       db:
         condition: service_healthy
