@@ -501,6 +501,7 @@ services:
       iframes:
         condition: service_started
   dashboardui:
+    container_name: quadrillion-admin-panel
     image: oven/bun:1.2
     volumes:
       - ./quadrillion-admin-panel:/apps/quadrillion-admin-panel
@@ -526,6 +527,7 @@ services:
         condition: service_started
 
   iframes:
+    container_name: quadrillion-UI-integration
     image: oven/bun:1.2
     volumes:
       - ./quadrillion-UI-integration:/apps/quadrillion-UI-integration
@@ -549,6 +551,7 @@ services:
         condition: service_started
 
   api:
+    container_name: quadrillion-api
     image: oven/bun:1.2
     volumes:
       - ./quadrillion-api:/apps/quadrillion-api
