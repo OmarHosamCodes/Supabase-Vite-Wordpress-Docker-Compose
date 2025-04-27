@@ -4,3 +4,6 @@
 !.env.example.local
 !.gitignore
 !README.md
+!package.json
+!nginx
+!nginx/**

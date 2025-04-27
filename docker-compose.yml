@@ -4,13 +4,7 @@ services:
     image: supabase/studio:2025.04.21-sha-173cc56
     restart: unless-stopped
     healthcheck:
-      test:
-        [
-          "CMD",
-          "node",
-          "-e",
-          "fetch('http://studio:3000/api/platform/profile').then((r) => {if (r.status !== 200) throw new Error(r.status)})",
-        ]
+      test: [ "CMD", "node", "-e", "fetch('http://studio:3000/api/platform/profile').then((r) => {if (r.status !== 200) throw new Error(r.status)})" ]
       timeout: 10s
       interval: 5s
       retries: 3
@@ -74,15 +68,7 @@ services:
     image: supabase/gotrue:v2.171.0
     restart: unless-stopped
     healthcheck:
-      test:
-        [
-          "CMD",
-          "wget",
-          "--no-verbose",
-          "--tries=1",
-          "--spider",
-          "http://localhost:9999/health",
-        ]
+      test: [ "CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:9999/health" ]
       timeout: 5s
       interval: 5s
       retries: 3
@@ -169,7 +155,7 @@ services:
       PGRST_DB_USE_LEGACY_GUCS: "false"
       PGRST_APP_SETTINGS_JWT_SECRET: ${JWT_SECRET}
       PGRST_APP_SETTINGS_JWT_EXP: ${JWT_EXPIRY}
-    command: ["postgrest"]
+    command: [ "postgrest" ]
 
   realtime:
     # This container name looks inconsistent but is correct because realtime constructs tenant id by parsing the subdomain
@@ -183,18 +169,7 @@ services:
       analytics:
         condition: service_healthy
     healthcheck:
-      test:
-        [
-          "CMD",
-          "curl",
-          "-sSfL",
-          "--head",
-          "-o",
-          "/dev/null",
-          "-H",
-          "Authorization: Bearer ${ANON_KEY}",
-          "http://localhost:4000/api/tenants/realtime-dev/health",
-        ]
+      test: [ "CMD", "curl", "-sSfL", "--head", "-o", "/dev/null", "-H", "Authorization: Bearer ${ANON_KEY}", "http://localhost:4000/api/tenants/realtime-dev/health" ]
       timeout: 5s
       interval: 5s
       retries: 3
@@ -224,15 +199,7 @@ services:
     volumes:
       - ./supabase/volumes/storage:/var/lib/storage:z
     healthcheck:
-      test:
-        [
-          "CMD",
-          "wget",
-          "--no-verbose",
-          "--tries=1",
-          "--spider",
-          "http://storage:5000/status",
-        ]
+      test: [ "CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://storage:5000/status" ]
       timeout: 5s
       interval: 5s
       retries: 3
@@ -271,7 +238,7 @@ services:
       - ./supabase/volumes/storage:/var/lib/storage:z
 
     healthcheck:
-      test: ["CMD", "imgproxy", "health"]
+      test: [ "CMD", "imgproxy", "health" ]
       timeout: 5s
       interval: 5s
       retries: 3
@@ -315,7 +282,7 @@ services:
       SUPABASE_DB_URL: postgresql://postgres:${POSTGRES_PASSWORD}@${POSTGRES_HOST}:${POSTGRES_PORT}/${POSTGRES_DB}
       # TODO: Allow configuring VERIFY_JWT per function. This PR might help: https://github.com/supabase/cli/pull/786
       VERIFY_JWT: "${FUNCTIONS_VERIFY_JWT}"
-    command: ["start", "--main-service", "/home/deno/functions/main"]
+    command: [ "start", "--main-service", "/home/deno/functions/main" ]
 
   analytics:
     container_name: supabase-analytics
@@ -330,7 +297,7 @@ services:
     #     target: /opt/app/rel/logflare/bin/gcloud.json
     #     read_only: true
     healthcheck:
-      test: ["CMD", "curl", "http://localhost:4000/health"]
+      test: [ "CMD", "curl", "http://localhost:4000/health" ]
       timeout: 5s
       interval: 5s
       retries: 10
@@ -385,7 +352,7 @@ services:
       # Use named volume to persist pgsodium decryption key between restarts
       - supabase_db_config:/etc/postgresql-custom
     healthcheck:
-      test: ["CMD", "pg_isready", "-U", "postgres", "-h", "localhost"]
+      test: [ "CMD", "pg_isready", "-U", "postgres", "-h", "localhost" ]
       interval: 5s
       timeout: 5s
       retries: 10
@@ -402,13 +369,7 @@ services:
       POSTGRES_DB: ${POSTGRES_DB}
       JWT_SECRET: ${JWT_SECRET}
       JWT_EXP: ${JWT_EXPIRY}
-    command: [
-        "postgres",
-        "-c",
-        "config_file=/etc/postgresql/postgresql.conf",
-        "-c",
-        "log_min_messages=fatal", # prevents Realtime polling queries from appearing in logs
-      ]
+    command: [ "postgres", "-c", "config_file=/etc/postgresql/postgresql.conf", "-c", "log_min_messages=fatal" ] # prevents Realtime polling queries from appearing in logs
   vector:
     container_name: supabase-vector
     image: timberio/vector:0.28.1-alpine
@@ -417,21 +378,13 @@ services:
       - ./supabase/volumes/logs/vector.yml:/etc/vector/vector.yml:ro,z
       - ${DOCKER_SOCKET_LOCATION}:/var/run/docker.sock:ro,z
     healthcheck:
-      test:
-        [
-          "CMD",
-          "wget",
-          "--no-verbose",
-          "--tries=1",
-          "--spider",
-          "http://vector:9001/health",
-        ]
+      test: [ "CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://vector:9001/health" ]
       timeout: 5s
       interval: 5s
       retries: 3
     environment:
       LOGFLARE_API_KEY: ${LOGFLARE_API_KEY}
-    command: ["--config", "/etc/vector/vector.yml"]
+    command: [ "--config", "/etc/vector/vector.yml" ]
     security_opt:
       - "label=disable"
 
@@ -446,16 +399,7 @@ services:
     volumes:
       - ./supabase/volumes/pooler/pooler.exs:/etc/pooler/pooler.exs:ro
     healthcheck:
-      test:
-        [
-          "CMD",
-          "curl",
-          "-sSfL",
-          "--head",
-          "-o",
-          "/dev/null",
-          "http://127.0.0.1:4000/api/health",
-        ]
+      test: [ "CMD", "curl", "-sSfL", "--head", "-o", "/dev/null", "http://127.0.0.1:4000/api/health" ]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -481,19 +425,12 @@ services:
       POOLER_DEFAULT_POOL_SIZE: ${POOLER_DEFAULT_POOL_SIZE}
       POOLER_MAX_CLIENT_CONN: ${POOLER_MAX_CLIENT_CONN}
       POOLER_POOL_MODE: transaction
-    command:
-      [
-        "/bin/sh",
-        "-c",
-        '/app/bin/migrate && /app/bin/supavisor eval "$$(cat /etc/pooler/pooler.exs)" && /app/bin/server',
-      ]
+    command: [ "/bin/sh", "-c", '/app/bin/migrate && /app/bin/supavisor eval "$$(cat /etc/pooler/pooler.exs)" && /app/bin/server' ]
   wordpress:
     image: wordpress:6.7.2-php8.3
     restart: always
-    ports:
-      - "${WP_PORT}:80"
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:80"]
+      test: [ "CMD", "curl", "-f", "http://localhost:80" ]
       interval: 30s
       timeout: 10s
       retries: 3
@@ -524,12 +461,7 @@ services:
       WORDPRESS_DB_USER: ${WP_DB_USER}
       WORDPRESS_DB_PASSWORD: ${WP_DB_PASSWORD}
       WORDPRESS_DB_NAME: ${WP_DB_NAME}
-    command:
-      [
-        "sh",
-        "-c",
-        "echo 'Waiting for WordPress to initialize...' && sleep 40 && if ! wp core is-installed --allow-root; then wp core install --url=http://localhost:${WP_PORT} --title='My WordPress Site' --admin_user='admin' --admin_password='adminpass' --admin_email='admin@example.com' --skip-email --allow-root && echo 'WordPress has been installed successfully!'; else echo 'WordPress is already installed.'; fi",
-      ]
+    command: [ "sh", "-c", "echo 'Waiting for WordPress to initialize...' && sleep 40 && if ! wp core is-installed --allow-root; then wp core install --url=http://localhost:${WP_PORT} --title='My WordPress Site' --admin_user='admin' --admin_password='adminpass' --admin_email='admin@example.com' --skip-email --allow-root && echo 'WordPress has been installed successfully!'; else echo 'WordPress is already installed.'; fi" ]
   wordpress_db:
     image: mysql:8.0
     restart: always
@@ -545,8 +477,6 @@ services:
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
     restart: always
-    ports:
-      - "${PMA_PORT}:80"
     environment:
       PMA_HOST: wordpress_db
       PMA_PORT: 3306
@@ -571,20 +501,19 @@ services:
     image: oven/bun:1.2
     volumes:
       - ./quadrillion-admin-panel:/apps/quadrillion-admin-panel
-    ports:
-      - "${DASHBOARD_PORT}:8092"
     environment:
-      - VITE_BASE_URL=${DASHBOARD_BASE_URL}
+      - VITE_BASE_URL=${DASHBOARD_BASE_URL} # Keep internal env var if needed by app
+      - NEXT_PUBLIC_API_BASE_URL=http://api.localhost # Example: Update frontend base URL if needed
     working_dir: /apps/quadrillion-admin-panel
-    command: sh -c "bun install && bun run dev"
+    command: sh -c "bun install && bun run local" # Changed to 'local' script from package.json
     develop:
       watch:
         - path: ./quadrillion-admin-panel/package.json
           action: sync+restart
           target: /apps/quadrillion-admin-panel/package.json
-        - path: ./quadrillion-admin-panel/vite.config.ts
+        - path: ./quadrillion-admin-panel/next.config.ts
           action: sync+restart
-          target: /apps/quadrillion-admin-panel/vite.config.ts
+          target: /apps/quadrillion-admin-panel/next.config.ts
         - path: ./quadrillion-admin-panel/src
           action: sync+restart
           target: /apps/quadrillion-admin-panel/src
@@ -597,13 +526,12 @@ services:
     image: oven/bun:1.2
     volumes:
       - ./quadrillion-UI-integration:/apps/quadrillion-UI-integration
-    ports:
-      - "${IFRAME_PORT}:8093"
     environment:
-      - VITE_BASE_URL=${IFRAME_BASE_URL}
+      - VITE_BASE_URL=${IFRAME_BASE_URL} # Keep internal env var if needed by app
+      - VITE_API_BASE_URL=http://api.localhost # Example: Update frontend base URL if needed
       - VITE_DEV_EMAIL=${DEV_EMAIL}
     working_dir: /apps/quadrillion-UI-integration
-    command: sh -c "bun install && bun run dev"
+    command: sh -c "bun install && bun run local" # Changed to 'local' script from package.json
     develop:
       watch:
         - path: ./quadrillion-UI-integration/package.json
@@ -612,6 +540,9 @@ services:
         - path: ./quadrillion-UI-integration/vite.config.ts
           action: sync+restart
           target: /apps/quadrillion-UI-integration/vite.config.ts
+        - path: ./quadrillion-UI-integration/src
+          action: sync+restart
+          target: /apps/quadrillion-UI-integration/src
     depends_on:
       api:
         condition: service_started
@@ -621,22 +552,23 @@ services:
     image: oven/bun:1.2
     volumes:
       - ./quadrillion-api:/apps/quadrillion-api
-    ports:
-      - "${API_PORT}:8095"
     environment:
       - JWT_SECRET=${JWT_SECRET}
-      - SUPABASE_URL=${SUPABASE_URL}
+      - SUPABASE_URL=${SUPABASE_URL} # Keep internal Supabase URL
       - SUPABASE_ANON_KEY=${ANON_KEY}
       - SUPABASE_STORAGE_URL=${SUPABASE_STORAGE_URL}
       - NODE_ENV=${NODE_ENV}
-      - PORT=${API_PORT}
+      - PORT=8095 # Internal port the API listens on
     working_dir: /apps/quadrillion-api
-    command: sh -c "bun install && bun run dev"
+    command: sh -c "bun install && bun run local" # Changed to 'local' script from package.json
     develop:
       watch:
         - path: ./quadrillion-api/package.json
           action: sync+restart
           target: /apps/quadrillion-api/package.json
+        - path: ./quadrillion-api/src
+          action: sync+restart
+          target: /apps/quadrillion-api/src
     depends_on:
       db:
         condition: service_healthy
@@ -653,10 +585,28 @@ services:
       realtime:
         condition: service_started
 
+  nginx:
+    container_name: nginx-proxy
+    image: nginx:stable-alpine
+    ports:
+      - "80:80" # Expose Nginx on host port 80
+      # - "443:443" # Uncomment if you set up SSL
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      # - ./nginx/certs:/etc/nginx/certs:ro # Uncomment if you set up SSL
+    depends_on:
+      - dashboardui
+      - iframes
+      - api
+      - wordpress # Add dependencies for all proxied services
+      - phpmyadmin
+    restart: unless-stopped
+
 volumes:
   wordpress_data:
   wordpress_db_data:
   supabase_db_config:
+
 
 networks:
   default:

@@ -1,0 +1,18 @@
+{
+	"name": "quadrillion",
+	"type": "module",
+	"private": true,
+	"scripts": {
+		"local:supabase": "supabase start",
+		"local:plugin": "cd wp-plugin && docker compose up -d",
+		"local:admin": "cd quadrillion-admin-panel && bun --env-file=.env.local run local",
+		"local:api": "cd quadrillion-api && bun --env-file=.env.local run local",
+		"local:ui": "cd quadrillion-UI-integration && bun --env-file=.env.local run local",
+		"local:nginx": "nginx -c $(pwd)/nginx/nginx.conf",
+		"local:start": "concurrently \"bun run local:supabase\" \"bun run local:plugin\" \"bun run local:admin\" \"bun run local:api\" \"bun run local:ui\" \"bun run local:nginx\"",
+		"local:stop": "supabase stop && cd wp-plugin && docker compose down && cd .. && killall -15 bun && nginx -s stop"
+	},
+	"devDependencies": {
+		"@types/bun": "latest"
+	}
+}
