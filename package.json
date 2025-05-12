@@ -8,7 +8,30 @@
 		"local:api": "cd quadrillion-api && bun --env-file=.env.development run local",
 		"local:ui": "cd quadrillion-UI-integration && bun --env-file=.env.local run local",
 		"local:start": "concurrently \"bun run local:plugin\" \"bun run local:admin\" \"bun run local:api\" \"bun run local:ui\"",
-		"local:stop": "cd wp-plugin && docker compose down && cd .. && killall -15 bun"
+		"local:stop": "cd wp-plugin && docker compose down && cd .. && killall -15 bun",
+
+		"-------------------------------": "--------------------------------",
+
+		"dev:admin": "cd quadrillion-admin-panel && bun --env-file=.env.development run dev",
+		"dev:api": "cd quadrillion-api && bun --env-file=.env.development run dev",
+		"dev:ui": "cd quadrillion-UI-integration && bun --env-file=.env.development run dev",
+		"dev:start": "concurrently \"bun run dev:admin\" \"bun run dev:api\" \"bun run dev:ui\"",
+		"dev:stop": "killall -15 bun",
+
+		"------------------------------": "--------------------------------",
+
+		"prod:admin": "cd quadrillion-admin-panel && bun --env-file=.env.production run prod",
+		"prod:api": "cd quadrillion-api && bun --env-file=.env.production run prod",
+		"prod:ui": "cd quadrillion-UI-integration && bun --env-file=.env.production run prod",
+		"prod:start": "concurrently \"bun run prod:admin\" \"bun run prod:api\" \"bun run prod:ui\"",
+		"prod:stop": "killall -15 bun",
+
+		"--------------------------------": "--------------------------------",
+
+		"build:admin": "cd quadrillion-admin-panel && bun build",
+		"build:api": "cd quadrillion-api && bun build",
+		"build:ui": "cd quadrillion-UI-integration && bun build",
+		"build": "concurrently \"bun run build:admin\" \"bun run build:api\" \"bun run build:ui\""
 	},
 	"devDependencies": {
 		"@types/bun": "latest"
