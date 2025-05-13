@@ -31,7 +31,21 @@
 		"build:admin": "cd quadrillion-admin-panel && bun build",
 		"build:api": "cd quadrillion-api && bun build",
 		"build:ui": "cd quadrillion-UI-integration && bun build",
-		"build": "concurrently \"bun run build:admin\" \"bun run build:api\" \"bun run build:ui\""
+		"build": "concurrently \"bun run build:admin\" \"bun run build:api\" \"bun run build:ui\"",
+
+		"-----------------------------": "--------------------------------",
+
+		"install:admin": "cd quadrillion-admin-panel && bun install",
+		"install:api": "cd quadrillion-api && bun install",
+		"install:ui": "cd quadrillion-UI-integration && bun install",
+		"install:all": "cd quadrillion-admin-panel && bun install && cd ../quadrillion-api && bun install && cd ../quadrillion-UI-integration && bun install",
+
+		"----------------------------": "--------------------------------",
+
+		"cleanup:all": "rm -rf node_modules && rm -rf quadrillion-admin-panel/node_modules && rm -rf quadrillion-api/node_modules && rm -rf quadrillion-UI-integration/node_modules && rm -rf quadrillion-admin-panel/.next && rm -rf quadrillion-api/.next && rm -rf quadrillion-UI-integration/.next && rm -rf quadrillion-admin-panel/dist && rm -rf quadrillion-api/dist && rm -rf quadrillion-UI-integration/dist",
+		"cleanup:ui": "rm -rf quadrillion-UI-integration/node_modules && rm -rf quadrillion-UI-integration/.next && rm -rf quadrillion-UI-integration/dist",
+		"cleanup:admin": "rm -rf quadrillion-admin-panel/node_modules && rm -rf quadrillion-admin-panel/.next && rm -rf quadrillion-admin-panel/dist",
+		"cleanup:api": "rm -rf quadrillion-api/node_modules && rm -rf quadrillion-api/.next && rm -rf quadrillion-api/dist"
 	},
 	"devDependencies": {
 		"@types/bun": "latest"
