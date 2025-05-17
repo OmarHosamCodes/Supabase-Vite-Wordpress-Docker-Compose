@@ -10,15 +10,11 @@
 		"local:start": "concurrently \"bun run local:plugin\" \"bun run local:admin\" \"bun run local:api\" \"bun run local:ui\"",
 		"local:stop": "cd wp-plugin && docker compose down && cd .. && killall -15 bun",
 
-		"-------------------------------": "--------------------------------",
-
 		"dev:admin": "cd loyal-rev-admin-panel && bun --env-file=.env.development run dev",
 		"dev:api": "cd loyal-rev-api && bun --env-file=.env.development run dev",
 		"dev:ui": "cd loyal-rev-UI-integration && bun --env-file=.env.development run dev",
 		"dev:start": "concurrently \"bun run dev:admin\" \"bun run dev:api\" \"bun run dev:ui\"",
 		"dev:stop": "killall -15 bun",
-
-		"------------------------------": "--------------------------------",
 
 		"prod:admin": "cd loyal-rev-admin-panel && bun --env-file=.env.production run prod",
 		"prod:api": "cd loyal-rev-api && bun --env-file=.env.production run prod",
@@ -26,21 +22,15 @@
 		"prod:start": "concurrently \"bun run prod:admin\" \"bun run prod:api\" \"bun run prod:ui\"",
 		"prod:stop": "killall -15 bun",
 
-		"--------------------------------": "--------------------------------",
-
 		"build:admin": "cd loyal-rev-admin-panel && bun build",
 		"build:api": "cd loyal-rev-api && bun build",
 		"build:ui": "cd loyal-rev-UI-integration && bun build",
 		"build": "concurrently \"bun run build:admin\" \"bun run build:api\" \"bun run build:ui\"",
 
-		"-----------------------------": "--------------------------------",
-
 		"install:admin": "cd loyal-rev-admin-panel && bun install",
 		"install:api": "cd loyal-rev-api && bun install",
 		"install:ui": "cd loyal-rev-UI-integration && bun install",
 		"install:all": "cd loyal-rev-admin-panel && bun install && cd ../loyal-rev-api && bun install && cd ../loyal-rev-UI-integration && bun install",
-
-		"----------------------------": "--------------------------------",
 
 		"cleanup:all": "rm -rf node_modules && rm -rf loyal-rev-admin-panel/node_modules && rm -rf loyal-rev-api/node_modules && rm -rf loyal-rev-UI-integration/node_modules && rm -rf loyal-rev-admin-panel/.next && rm -rf loyal-rev-api/.next && rm -rf loyal-rev-UI-integration/.next && rm -rf loyal-rev-admin-panel/dist && rm -rf loyal-rev-api/dist && rm -rf loyal-rev-UI-integration/dist",
 		"cleanup:ui": "rm -rf loyal-rev-UI-integration/node_modules && rm -rf loyal-rev-UI-integration/.next && rm -rf loyal-rev-UI-integration/dist",
