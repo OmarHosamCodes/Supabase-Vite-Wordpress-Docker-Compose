@@ -16,9 +16,10 @@
 		"dev:start": "concurrently \"bun run dev:admin\" \"bun run dev:api\" \"bun run dev:ui\"",
 		"dev:stop": "killall -15 bun",
 
-		"prod:admin": "cd loyal-rev-admin-panel && bun --env-file=.env.production run prod",
-		"prod:api": "cd loyal-rev-api && bun --env-file=.env.production run prod",
-		"prod:ui": "cd loyal-rev-UI-integration && bun --env-file=.env.production run prod",
+		"prod:plugin": "cd wp-plugin && docker compose up -d",
+		"prod:admin": "cd loyal-rev-admin-panel && bun --env-file=.env.production run local",
+		"prod:api": "cd loyal-rev-api && bun --env-file=.env.production run local",
+		"prod:ui": "cd loyal-rev-UI-integration && bun --env-file=.env.production run local",
 		"prod:start": "concurrently \"bun run prod:admin\" \"bun run prod:api\" \"bun run prod:ui\"",
 		"prod:stop": "killall -15 bun",
 
