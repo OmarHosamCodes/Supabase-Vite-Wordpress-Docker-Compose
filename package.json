@@ -31,10 +31,12 @@
     "cleanup:all": "rm -rf node_modules && rm -rf loyal-rev-admin-panel/node_modules && rm -rf loyal-rev-api/node_modules && rm -rf loyal-rev-UI-integration/node_modules && rm -rf loyal-rev-admin-panel/.next && rm -rf loyal-rev-api/.next && rm -rf loyal-rev-UI-integration/.next && rm -rf loyal-rev-admin-panel/dist && rm -rf loyal-rev-api/dist && rm -rf loyal-rev-UI-integration/dist",
     "cleanup:ui": "rm -rf loyal-rev-UI-integration/node_modules && rm -rf loyal-rev-UI-integration/.next && rm -rf loyal-rev-UI-integration/dist",
     "cleanup:admin": "rm -rf loyal-rev-admin-panel/node_modules && rm -rf loyal-rev-admin-panel/.next && rm -rf loyal-rev-admin-panel/dist",
-    "cleanup:api": "rm -rf loyal-rev-api/node_modules && rm -rf loyal-rev-api/.next && rm -rf loyal-rev-api/dist"
+    "cleanup:api": "rm -rf loyal-rev-api/node_modules && rm -rf loyal-rev-api/.next && rm -rf loyal-rev-api/dist",
+    "db:gen": "supabase gen types typescript --project-id ojnshlznmlqmvlsbpcpt > ./loyal-rev-api/src/types/database.types.ts"
   },
   "devDependencies": {
     "@types/bun": "latest",
-    "supabase": "^2.23.4"
+    "supabase": "^2.23.4",
+    "vercel": "^43.1.0"
   }
 }
