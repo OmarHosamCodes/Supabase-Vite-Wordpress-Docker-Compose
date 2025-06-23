@@ -35,6 +35,7 @@
     "db:gen": "supabase gen types typescript --project-id ojnshlznmlqmvlsbpcpt > ./loyal-rev-api/src/types/database.types.ts"
   },
   "devDependencies": {
+    "@biomejs/biome": "^2.0.4",
     "@types/bun": "latest",
     "supabase": "^2.23.4",
     "vercel": "^43.3.0"
