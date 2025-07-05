@@ -1,71 +1,121 @@
 ```markdown
-# Supabase+Wordpress+Vite+API-Server Docker Compose Setup
+# Quadrillion Local Development Environment
 
-This repository provides a Docker Compose file for setting up a local Supabase development environment. It includes all the necessary services, configured for easy deployment and testing.  This setup also includes a WordPress instance with a custom plugin and phpMyAdmin for database management.
+This repository contains the Docker Compose setup for the Quadrillion project, providing a complete local development environment. It includes Supabase for the backend, WordPress for content management, and several Next.js applications for the frontend, all containerized for easy setup and management.
+
+## Project Structure
+
+The repository is organized into the following main components:
+
+- `loyal-rev-admin-panel/`: The admin dashboard application.
+- `loyal-rev-api/`: The core API server.
+- `loyal-rev-UI-integration/`: Frontend components for UI integration.
+- `loyal-rev-website/`: The main project website.
+- `supabase/`: Supabase configuration and data.
+- `wp-plugin/`: The custom WordPress plugin for Quadrillion.
+- `nginx/`: Nginx configuration.
+- `docker-compose.yml`: The main Docker Compose file orchestrating all the services.
+- `README.md`: This file.
 
 ## Prerequisites
 
-- Docker and Docker Compose installed.  See the official Docker documentation for installation instructions: [https://docs.docker.com/get-docker/](https://docs.docker.com/get-docker/)
-- A `.env` file in the root directory containing the required environment variables.  A sample `.env` file is provided below.
-- A `supabase` directory with the necessary configuration files and volumes as described in the original docker-compose file. This directory is not included in the repository for security reasons and should be created manually.
-- A `wp-plugin` directory containing your custom WordPress plugin. This directory is not included in the repository and should be created manually.
-
+- Docker and Docker Compose must be installed on your system.
+- You need to create a `.env` file in the root of the project. You can copy the contents of `.env.example` and fill in the required values.
 
 ## Getting Started
 
-1. **Clone the repository:**
+1.  **Clone the repository:**
+    ```bash
+    git clone <your-repo-url>
+    cd Quadrillion
+    ```
 
-   ```bash
-   git clone <repository_url>
-   cd <repository_name>
-   ```
+2.  **Set up the environment:**
+    Create a `.env` file in the root directory by copying `.env.example` and updating the variables as needed.
 
-2. **Create the `.env` file:**
+3.  **Start the services:**
+    ```bash
+    docker-compose up -d
+    ```
 
-   Copy the example `.env.example` content below and create a `.env` file in the root directory.  **Fill in the placeholder values with your actual credentials.**
+4.  **Access the services:**
+    Once the containers are running, you can access the different parts of the application:
 
-  ```
+    - **Supabase Studio:** [http://localhost:8000](http://localhost:8000)
+    - **WordPress Admin:** [http://localhost:8090/wp-admin](http://localhost:8090/wp-admin)
+    - **phpMyAdmin:** [http://localhost:8091](http://localhost:8091)
+    - **Admin Panel:** [http://localhost:8092](http://localhost:8092)
+    - **UI Integration:** [http://localhost:8093](http://localhost:8093)
+    - **API Server:** [http://localhost:8095](http://localhost:8095)
 
-3. **Create the `supabase` directory:**
+5.  **Stopping the environment:**
+    To stop all running containers, use the following command:
+    ```bash
+    docker-compose down
+    ```
 
-   Create the `supabase` directory and populate it with the necessary files and subdirectories as described in the original docker-compose file.  This includes creating the `volumes` subdirectories and populating them with the SQL scripts, Kong configuration, and other required files.  This step is crucial for the Supabase setup to function correctly.
+## Services Overview
 
-4. **Create the `wp-plugin` directory:**
+The `docker-compose.yml` file defines the following services:
 
-   Create the `wp-plugin` directory and place your custom WordPress plugin inside.  This directory should contain your plugin's files and folders.
+- **Supabase:** A suite of services providing the backend infrastructure, including:
+  - `studio`: The Supabase dashboard.
+  - `kong`: The API gateway.
+  - `auth`: GoTrue for authentication.
+  - `rest`: PostgREST for RESTful API access to the database.
+  - `realtime`: Realtime broadcasting service.
+  - `storage`: S3-compatible object storage.
+  - `imgproxy`: Image transformation service.
+  - `meta`: Manages database metadata.
+  - `functions`: Edge functions runtime.
+  - `analytics`: Logflare for analytics.
+  - `db`: PostgreSQL database.
+  - `vector`: Log aggregation.
+  - `supavisor`: Connection pooler.
 
-5. **Start the containers:**
+- **WordPress:**
+  - `wordpress`: The WordPress application.
+  - `wordpress_db`: MySQL database for WordPress.
+  - `wpcli`: WP-CLI for command-line management.
+  - `phpmyadmin`: Web-based database management for the WordPress database.
 
-   ```bash
-   docker compose up -d
-   ```
+- **Frontend Applications:**
+  - `dashboardui`: The admin panel application.
+  - `iframes`: The UI integration application.
 
-6. **Access the services:**
+- **Backend:**
+  - `api`: The core API server.
 
-   - Supabase Studio: `http://localhost:8000` (Use the credentials from your `.env` file)
-   - WordPress: `http://localhost:8090`
-   - phpMyAdmin: `http://localhost:8091`
-   - Dashboard UI: `http://localhost:8092` (Example vite app)
-   - Iframes: `http://localhost:8093` (Example vite app)
-   - API: `http://localhost:8095` (Example JS Server)
+## Environment Variables
 
-7. **Stop the containers:**
+The `.env` file is crucial for configuring the services. Below is an example with explanations for the key variables.
 
-   ```bash
-   docker compose down
-   ```
+```env
+# Supabase
+POSTGRES_PASSWORD=your_strong_password
+JWT_SECRET=your_jwt_secret
+ANON_KEY=your_anon_key
+SERVICE_ROLE_KEY=your_service_role_key
 
-## Important Notes
+# WordPress
+WP_PORT=8090
+WP_DB_USER=wordpress
+WP_DB_PASSWORD=wordpress
+WP_DB_NAME=wordpress
 
-- This setup is for development purposes only.  Do not use it in production.
-- Make sure to replace all placeholder values in the `.env` file with your actual credentials.
-- The `supabase` directory and `wp-plugin` directory are not included in the repository and must be created manually.  Refer to the original docker-compose file for the directory structure and required files.
-- The WordPress setup includes a custom plugin.  Make sure to place your plugin in the `wp-plugin` directory.
-- The database credentials for WordPress are defined in the `.env` file.
-- The provided `.env` file is a template.  You may need to adjust it based on your specific needs.
-- The `supavisor` service is included for connection pooling.  This can improve performance, especially under heavy load.
-- The included WordPress setup uses MySQL.
-- The `vector` service is used for log aggregation.
-- The `imgproxy` service is used for image processing.
+# phpMyAdmin
+PMA_PORT=8091
+
+# Frontend Apps
+DASHBOARD_PORT=8092
+IFRAME_PORT=8093
+
+# API
+API_PORT=8095
+
+# ... other variables
+```
+
+Make sure to replace the placeholder values with your actual secrets and configuration.
 
 This README provides a basic guide to setting up the Supabase development environment using Docker Compose.  For more detailed information about Supabase and its services, please refer to the official Supabase documentation: [https://supabase.com/docs](https://supabase.com/docs)
